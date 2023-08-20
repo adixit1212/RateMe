@@ -18,7 +18,6 @@ import { authSelector } from './redux/reducers/authSlice';
 import { osSelector } from './redux/reducers/platformSlice';
 import {NavigationContainer} from '@react-navigation/native';
 import {createNativeStackNavigator} from '@react-navigation/native-stack';
-import DetailsScreen from './components/Details';
 
 const styles = StyleSheet.create({
   outerContainer: {
@@ -32,30 +31,15 @@ const styles = StyleSheet.create({
     backgroundColor: '#fff',
   },
 });
-
-
 const Stack = createNativeStackNavigator();
 
-
-function HomeScreen({ navigation }) {
-  return (
-    <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}>
-      <Text>Home Screen</Text>
-      <Button
-        title="Go to Details"
-        onPress={() => navigation.navigate('Details')}
-        />
-      <Button
-       title="Go to Sign In"
-       onPress={() => navigation.navigate('SignIn')}
-      />
-      <Button
-       title="Go to Sign Up"
-       onPress={() => navigation.navigate('SignUp')}
-      />
-    </View>
-  );
-}
+const LoggedIn = ({navigation}) =>
+{
+return(
+<View>
+      <Text>You are now logged in! </Text>
+ </View> );
+};
 
 function App() {
 
@@ -75,10 +59,13 @@ function App() {
 
     <NavigationContainer>
       <Stack.Navigator initialRouteName="SignIn">
-        <Stack.Screen name="Home" component={HomeScreen} />
-        <Stack.Screen name="Details" component={DetailsScreen} />
-        <Stack.Screen name="SignIn" component={SignIn} />
-        <Stack.Screen name="SignUp" component={SignUp} />
+      { !isLoggedIn ? (
+      <>
+      <Stack.Screen name="SignIn" component={SignIn} />
+      <Stack.Screen name="SignUp" component={SignUp} />
+      </> ) : (
+      <Stack.Screen name="LoggedIn" component={LoggedIn}/>
+      )}
       </Stack.Navigator>
 
     </NavigationContainer>

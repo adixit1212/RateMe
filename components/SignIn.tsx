@@ -69,7 +69,7 @@ const styles = StyleSheet.create({
 
       <Button title="Sign In" onPress={handleSignIn} />
       <Text>New to RateMe ?</Text>
-      <Button title="Sign Up" onPress={() => navigation.navigate('SignUp')}/>
+      <Button title="Create an account" onPress={() => navigation.navigate('SignUp')}/>
 
     </View>
   );
