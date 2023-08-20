@@ -1,7 +1,8 @@
-import React, { useEffect, useState } from 'react';
+import React, { useState } from 'react';
 import { Button, StyleSheet, Text, TextInput, View } from 'react-native';
-import { User, addUser, userSelector } from '../reducers/userSlice';
-import { useAppDispatch, useAppSelector } from '../hooks';
+import { User, addUser, userSelector } from '../redux/reducers/userSlice';
+import { useAppDispatch, useAppSelector } from '../redux/hooks';
+import { store } from '../redux/store/store';
 
 const styles = StyleSheet.create({
   sectionContainer: {
@@ -14,7 +15,7 @@ const SignUp = () => {
   const [email, setEmail] = useState<string>('');
   const [password, setPassword] = useState<string>('');
 
-  const selectedUsers = useAppSelector(userSelector);
+  // const selectedUsers = useAppSelector(userSelector);
   const dispatch = useAppDispatch();
 
   const handleSignUp = () => {
@@ -22,10 +23,12 @@ const SignUp = () => {
       const newUser: User = {
         name: username,
         email: email,
+        password: password,
       };
       console.log('User successfully signed up:', newUser);
+      console.log('Old State:', store.getState());
       dispatch(addUser(newUser));
-      console.log('Dispatched');
+      console.log('New State:', store.getState());
     } catch (error) {
       console.error('Error signing up:', error);
     }
@@ -44,6 +47,13 @@ const SignUp = () => {
         placeholder="Email"
         value={email}
         onChangeText={(text) => setEmail(text)}
+      />
+      <Text>Password</Text>
+      <TextInput
+        placeholder="Password"
+        secureTextEntry
+        value={password}
+        onChangeText={(text) => setPassword(text)}
       />
       <Button title="Sign Up" onPress={handleSignUp} />
     </View>

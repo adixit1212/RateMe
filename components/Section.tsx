@@ -2,7 +2,7 @@ import React from 'react';
 import type { PropsWithChildren } from 'react';
 import { StyleSheet, Text, View } from 'react-native';
 import { connect } from 'react-redux';
-import { RootState } from '../reducers/rootReducer';
+import { RootState } from '../redux/reducers/rootReducer';
 
 const styles = StyleSheet.create({
   sectionContainer: {
