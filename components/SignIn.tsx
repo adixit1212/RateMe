@@ -1,10 +1,14 @@
 import React, { useEffect, useState } from 'react';
 import { Button, StyleSheet, Text, TextInput, View } from 'react-native';
-import { User, addUser, userSelector } from '../redux/reducers/userSlice';
+import { User, addLoginUser, loginUserSelector } from '../redux/reducers/loginUserSlice';
 import { login } from '../redux/reducers/authSlice';
 import { useAppDispatch, useAppSelector } from '../redux/hooks';
 import { store } from '../redux/store/store';
 import { useSelector } from 'react-redux';
+import {NavigationContainer} from '@react-navigation/native';
+import {createNativeStackNavigator} from '@react-navigation/native-stack';
+
+const Stack = createNativeStackNavigator();
 
 const styles = StyleSheet.create({
   sectionContainer: {
@@ -12,43 +16,41 @@ const styles = StyleSheet.create({
   },
 });
 
-const SignUp = () => {
-  const [username, setUsername] = useState<string>('');
+ const SignIn = () => {
   const [email, setEmail] = useState<string>('');
   const [password, setPassword] = useState<string>('');
 
   const dispatch = useAppDispatch();
-  const userSliceState = useSelector(userSelector);
-  const handleSignUp = () => {
+  const loginUserSliceState = useSelector(loginUserSelector);
+
+  const handleSignIn = () => {
     try {
-      const newUser: User = {
-        name: username,
+      const loginUser: User = {
         email: email,
         password: password,
       };
-      console.log('User successfully signed up:', newUser);
+      console.log('User successfully signed in:', loginUser);
       console.log('Old State:', store.getState());
-      console.log('Old UserReducer: ', userSliceState);
-      dispatch(addUser(newUser));
-      //dispatch(login());
+      console.log('Old Login Reducer: ', loginUserSliceState);
+
+      dispatch(addLoginUser(loginUser));
+      dispatch(login());
+
       console.log('New State:', store.getState());
+
     } catch (error) {
       console.error('Error signing up:', error);
     }
   };
 
   useEffect(() => {
-    console.log('New UserReducer: ', userSliceState);
-  }, [userSliceState]);
+    console.log('New Login Reducer: ', loginUserSliceState);
+  }, [loginUserSliceState]);
 
   return (
     <View style={styles.sectionContainer}>
-      <Text>Sign Up</Text>
-      <TextInput
-        placeholder="Username"
-        value={username}
-        onChangeText={(text) => setUsername(text)}
-      />
+      <Text>Sign In</Text>
+
       <Text>Email</Text>
       <TextInput
         placeholder="Email"
@@ -62,9 +64,13 @@ const SignUp = () => {
         value={password}
         onChangeText={(text) => setPassword(text)}
       />
-      <Button title="Sign Up" onPress={handleSignUp} />
+
+      <Button title="Sign In" onPress={handleSignIn} />
+      <Text>New to RateMe ?</Text>
+      <Button title="Sign Up" />
+
     </View>
   );
 };
 
-export default SignUp;
+export default SignIn;
