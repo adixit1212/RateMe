@@ -7,6 +7,7 @@ import { store } from '../redux/store/store';
 import { useSelector } from 'react-redux';
 import {NavigationContainer} from '@react-navigation/native';
 import {createNativeStackNavigator} from '@react-navigation/native-stack';
+import SignUp from './SignUp'
 
 const Stack = createNativeStackNavigator();
 
@@ -16,7 +17,7 @@ const styles = StyleSheet.create({
   },
 });
 
- const SignIn = () => {
+  const SignIn = ({navigation}) => {
   const [email, setEmail] = useState<string>('');
   const [password, setPassword] = useState<string>('');
 
@@ -48,7 +49,8 @@ const styles = StyleSheet.create({
   }, [loginUserSliceState]);
 
   return (
-    <View style={styles.sectionContainer}>
+
+   <View style={styles.sectionContainer}>
       <Text>Sign In</Text>
 
       <Text>Email</Text>
@@ -67,7 +69,7 @@ const styles = StyleSheet.create({
 
       <Button title="Sign In" onPress={handleSignIn} />
       <Text>New to RateMe ?</Text>
-      <Button title="Sign Up" />
+      <Button title="Sign Up" onPress={() => navigation.navigate('SignUp')}/>
 
     </View>
   );

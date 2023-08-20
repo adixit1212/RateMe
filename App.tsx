@@ -9,13 +9,16 @@ import {
   StyleSheet,
   View,
   Text,
-  RefreshControl
+  RefreshControl,
+  Button
 } from 'react-native';
 import SignIn from './components/SignIn';
+import SignUp from './components/SignUp';
 import { authSelector } from './redux/reducers/authSlice';
 import { osSelector } from './redux/reducers/platformSlice';
 import {NavigationContainer} from '@react-navigation/native';
 import {createNativeStackNavigator} from '@react-navigation/native-stack';
+import DetailsScreen from './components/Details';
 
 const styles = StyleSheet.create({
   outerContainer: {
@@ -30,7 +33,32 @@ const styles = StyleSheet.create({
   },
 });
 
-const App = () => {
+
+const Stack = createNativeStackNavigator();
+
+
+function HomeScreen({ navigation }) {
+  return (
+    <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}>
+      <Text>Home Screen</Text>
+      <Button
+        title="Go to Details"
+        onPress={() => navigation.navigate('Details')}
+        />
+      <Button
+       title="Go to Sign In"
+       onPress={() => navigation.navigate('SignIn')}
+      />
+      <Button
+       title="Go to Sign Up"
+       onPress={() => navigation.navigate('SignUp')}
+      />
+    </View>
+  );
+}
+
+function App() {
+
    const isLoggedIn = useSelector(authSelector);
    const check_os = useSelector(osSelector);
 
@@ -44,25 +72,17 @@ const App = () => {
     }, []);
 
   return (
-  <NavigationContainer>
-    <SafeAreaView style={{flex: 1}}>
-      <StatusBar barStyle="dark-content" backgroundColor="white" />
-      <ScrollView refreshControl={
-                            <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
-                                     }>
-        <View style={styles.outerContainer}>
-          <View style={styles.container}>
-            { !isLoggedIn ? (
-              <SignIn/>
-            ) : (
-              <Text>You are now logged in! with {check_os} </Text>
-            )}
-          </View>
-        </View>
-      </ScrollView>
-    </SafeAreaView>
-   </NavigationContainer>
+
+    <NavigationContainer>
+      <Stack.Navigator initialRouteName="SignIn">
+        <Stack.Screen name="Home" component={HomeScreen} />
+        <Stack.Screen name="Details" component={DetailsScreen} />
+        <Stack.Screen name="SignIn" component={SignIn} />
+        <Stack.Screen name="SignUp" component={SignUp} />
+      </Stack.Navigator>
+
+    </NavigationContainer>
   );
-};
+}
 
 export default App;
