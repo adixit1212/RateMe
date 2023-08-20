@@ -1,13 +1,13 @@
 import React from 'react';
-import { Provider } from 'react-redux';
+import { Provider, useSelector } from 'react-redux';
 import {store} from './redux/store/store';
-import Section from './components/Section';
 import {
   SafeAreaView,
   ScrollView,
   StatusBar,
   StyleSheet,
   View,
+  Text,
 } from 'react-native';
 import SignUp from './components/SignUp';
 
@@ -25,6 +25,8 @@ const styles = StyleSheet.create({
 });
 
 const App = () => {
+  // const isLoggedIn = useSelector(state => state.authReducer.isLoggedIn);
+
   return (
     <Provider store={store}>
       <SafeAreaView style={{flex: 1}}>
@@ -32,10 +34,9 @@ const App = () => {
         <ScrollView>
           <View style={styles.outerContainer}>
             <View style={styles.container}>
-              {/* <Section title="Hi">
-                <Text>Hello User!</Text>
-              </Section> */}
-              <SignUp/>
+              {/* { isLoggedIn && <SignUp/> }
+              <Text>You are not logged in!</Text> */}
+              <SignUp />
             </View>
           </View>
         </ScrollView>

@@ -1,8 +1,9 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { Button, StyleSheet, Text, TextInput, View } from 'react-native';
 import { User, addUser, userSelector } from '../redux/reducers/userSlice';
 import { useAppDispatch, useAppSelector } from '../redux/hooks';
 import { store } from '../redux/store/store';
+import { useSelector } from 'react-redux';
 
 const styles = StyleSheet.create({
   sectionContainer: {
@@ -15,9 +16,8 @@ const SignUp = () => {
   const [email, setEmail] = useState<string>('');
   const [password, setPassword] = useState<string>('');
 
-  // const selectedUsers = useAppSelector(userSelector);
   const dispatch = useAppDispatch();
-
+  const userSliceState = useSelector(userSelector);
   const handleSignUp = () => {
     try {
       const newUser: User = {
@@ -27,12 +27,17 @@ const SignUp = () => {
       };
       console.log('User successfully signed up:', newUser);
       console.log('Old State:', store.getState());
+      console.log('Old UserReducer: ', userSliceState);
       dispatch(addUser(newUser));
       console.log('New State:', store.getState());
     } catch (error) {
       console.error('Error signing up:', error);
     }
   };
+
+  useEffect(() => {
+    console.log('New UserReducer: ', userSliceState);
+  }, [userSliceState]);
 
   return (
     <View style={styles.sectionContainer}>
