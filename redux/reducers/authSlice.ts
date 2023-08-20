@@ -2,7 +2,7 @@ import { createSlice } from '@reduxjs/toolkit';
 import { RootState } from '../store/store';
 
 interface Auth {
-  isLoggedIn: Boolean;
+  isLoggedIn: boolean;
 }
 
 const initialState: Auth = {
@@ -23,5 +23,5 @@ const authSlice = createSlice({
 });
 
 export const { login, logout } = authSlice.actions;
-export const authSelector = (state: RootState) => state.authReducer;
+export const authSelector = (state: RootState) => state.authReducer.isLoggedIn;
 export default authSlice.reducer;

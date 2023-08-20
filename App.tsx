@@ -1,6 +1,6 @@
 import React from 'react';
 import { Provider, useSelector } from 'react-redux';
-import {store} from './redux/store/store';
+import { store} from './redux/store/store';
 import {
   SafeAreaView,
   ScrollView,
@@ -10,6 +10,7 @@ import {
   Text,
 } from 'react-native';
 import SignUp from './components/SignUp';
+import { authSelector } from './redux/reducers/authSlice';
 
 const styles = StyleSheet.create({
   outerContainer: {
@@ -25,23 +26,23 @@ const styles = StyleSheet.create({
 });
 
 const App = () => {
-  // const isLoggedIn = useSelector(state => state.authReducer.isLoggedIn);
+  const isLoggedIn = useSelector(authSelector);
 
   return (
-    <Provider store={store}>
-      <SafeAreaView style={{flex: 1}}>
-        <StatusBar barStyle="dark-content" backgroundColor="white" />
-        <ScrollView>
-          <View style={styles.outerContainer}>
-            <View style={styles.container}>
-              {/* { isLoggedIn && <SignUp/> }
-              <Text>You are not logged in!</Text> */}
-              <SignUp />
-            </View>
+    <SafeAreaView style={{flex: 1}}>
+      <StatusBar barStyle="dark-content" backgroundColor="white" />
+      <ScrollView>
+        <View style={styles.outerContainer}>
+          <View style={styles.container}>
+            { !isLoggedIn ? (
+              <SignUp/>
+            ) : (
+              <Text>You are now logged in!</Text>
+            )}
           </View>
-        </ScrollView>
-      </SafeAreaView>
-    </Provider>
+        </View>
+      </ScrollView>
+    </SafeAreaView>
   );
 };
 
