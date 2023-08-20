@@ -4,6 +4,7 @@ import { User, addUser, userSelector } from '../redux/reducers/userSlice';
 import { useAppDispatch, useAppSelector } from '../redux/hooks';
 import { store } from '../redux/store/store';
 import { useSelector } from 'react-redux';
+import { login } from '../redux/reducers/authSlice';
 
 const styles = StyleSheet.create({
   sectionContainer: {
@@ -29,6 +30,7 @@ const SignUp = () => {
       console.log('Old State:', store.getState());
       console.log('Old UserReducer: ', userSliceState);
       dispatch(addUser(newUser));
+      dispatch(login());
       console.log('New State:', store.getState());
     } catch (error) {
       console.error('Error signing up:', error);

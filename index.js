@@ -10,11 +10,11 @@ import { Provider } from 'react-redux';
 import { store } from './redux/store/store';
 
 const RootComponent = () => {
-    return (
-        <Provider store={store}>
-            <App />
-        </Provider>
-    );
+  return (
+    <Provider store={store}>
+      <App />
+    </Provider>
+  );
 };
 
 AppRegistry.registerComponent(appName, () => RootComponent);
