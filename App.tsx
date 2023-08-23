@@ -14,8 +14,8 @@ import {
 } from 'react-native';
 import SignIn from './components/SignIn';
 import SignUp from './components/SignUp';
+import LoggedIn from './components/LoggedIn';
 import { authSelector } from './redux/reducers/authSlice';
-import { osSelector } from './redux/reducers/platformSlice';
 import {NavigationContainer} from '@react-navigation/native';
 import {createNativeStackNavigator} from '@react-navigation/native-stack';
 
@@ -33,18 +33,9 @@ const styles = StyleSheet.create({
 });
 const Stack = createNativeStackNavigator();
 
-const LoggedIn = ({navigation}) =>
-{
-return(
-<View>
-      <Text>You are now logged in! </Text>
- </View> );
-};
-
 function App() {
 
    const isLoggedIn = useSelector(authSelector);
-   const check_os = useSelector(osSelector);
 
    const [refreshing, setRefreshing] = React.useState(false);
 
@@ -64,7 +55,7 @@ function App() {
       <Stack.Screen name="SignIn" component={SignIn} />
       <Stack.Screen name="SignUp" component={SignUp} />
       </> ) : (
-      <Stack.Screen name="LoggedIn" component={LoggedIn}/>
+      <Stack.Screen name="LoggedIn" component={LoggedIn} />
       )}
       </Stack.Navigator>
 

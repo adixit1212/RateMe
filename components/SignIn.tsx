@@ -7,7 +7,8 @@ import { store } from '../redux/store/store';
 import { useSelector } from 'react-redux';
 import {NavigationContainer} from '@react-navigation/native';
 import {createNativeStackNavigator} from '@react-navigation/native-stack';
-import SignUp from './SignUp'
+import SignUp from './SignUp';
+import LoggedIn from './LoggedIn';
 
 const Stack = createNativeStackNavigator();
 
@@ -17,12 +18,14 @@ const styles = StyleSheet.create({
   },
 });
 
-  const SignIn = ({navigation}) => {
+  const SignIn = ({navigation, route}) => {
   const [email, setEmail] = useState<string>('');
   const [password, setPassword] = useState<string>('');
 
   const dispatch = useAppDispatch();
   const loginUserSliceState = useSelector(loginUserSelector);
+
+  const {signUpEmail} = route.params;
 
   const handleSignIn = () => {
     try {
@@ -38,6 +41,8 @@ const styles = StyleSheet.create({
       dispatch(login());
 
       console.log('New State:', store.getState());
+
+      //navigation.navigate('LoggedIn');
 
     } catch (error) {
       console.error('Error signing up:', error);
@@ -69,7 +74,7 @@ const styles = StyleSheet.create({
 
       <Button title="Sign In" onPress={handleSignIn} />
       <Text>New to RateMe ?</Text>
-      <Button title="Create an account" onPress={() => navigation.navigate('SignUp')}/>
+      <Button title="Create an account" onPress={() => navigation.navigate('SignUp')} />
 
     </View>
   );

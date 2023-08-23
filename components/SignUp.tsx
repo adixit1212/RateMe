@@ -5,6 +5,7 @@ import { login } from '../redux/reducers/authSlice';
 import { useAppDispatch, useAppSelector } from '../redux/hooks';
 import { store } from '../redux/store/store';
 import { useSelector } from 'react-redux';
+import { SignIn } from './SignIn';
 
 const styles = StyleSheet.create({
   sectionContainer: {
@@ -12,7 +13,7 @@ const styles = StyleSheet.create({
   },
 });
 
-const SignUp = () => {
+const SignUp = ({navigation}) => {
   const [username, setUsername] = useState<string>('');
   const [email, setEmail] = useState<string>('');
   const [password, setPassword] = useState<string>('');
@@ -30,8 +31,11 @@ const SignUp = () => {
       console.log('Old State:', store.getState());
       console.log('Old UserReducer: ', userSliceState);
       dispatch(addUser(newUser));
-      //dispatch(login());
       console.log('New State:', store.getState());
+      console.log(newUser.email +' has registered successfully');
+
+      navigation.navigate('SignIn');
+
     } catch (error) {
       console.error('Error signing up:', error);
     }
