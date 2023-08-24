@@ -2,30 +2,28 @@ import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 import { RootState } from '../store/store';
 
 export interface User {
-  name: string;
   email: string;
   password: string;
 }
 
 const initialState: Array<User> = [
   {
-    name: 'John Doe',
     email: 'johndoe@email.com',
-    password: 'Johnny',
+    password: 'Test@123',
   },
 ];
 
-const userSlice = createSlice({
-  name: 'users',
+const loginUserSlice = createSlice({
+  name: 'login_users',
   initialState,
   reducers: {
-    addUser: (state, action: PayloadAction<User>) => {
+    addLoginUser: (state, action: PayloadAction<User>) => {
       state.push(action.payload);
       // return [...state, action.payload];
     },
   },
 });
 
-export const { addUser } = userSlice.actions;
-export const userSelector = (state: RootState) => state.userReducer;
-export default userSlice.reducer;
+export const { addLoginUser } = loginUserSlice.actions;
+export const loginUserSelector = (state: RootState) => state.loginUserReducer;
+export default loginUserSlice.reducer;

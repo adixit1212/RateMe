@@ -1,15 +1,12 @@
 import React from 'react';
-import { Provider } from 'react-redux';
-import {store} from './redux/store/store';
-import Section from './components/Section';
-import {
-  SafeAreaView,
-  ScrollView,
-  StatusBar,
-  StyleSheet,
-  View,
-} from 'react-native';
+import { useSelector } from 'react-redux';
+import { StyleSheet } from 'react-native';
+import SignIn from './components/SignIn';
 import SignUp from './components/SignUp';
+import Home from './components/Home';
+import { authSelector } from './redux/reducers/authSlice';
+import { NavigationContainer } from '@react-navigation/native';
+import { createNativeStackNavigator } from '@react-navigation/native-stack';
 
 const styles = StyleSheet.create({
   outerContainer: {
@@ -24,23 +21,33 @@ const styles = StyleSheet.create({
   },
 });
 
+const Stack = createNativeStackNavigator();
+
 const App = () => {
+  const isLoggedIn = useSelector(authSelector);
+
+  const [refreshing, setRefreshing] = React.useState(false);
+
+  const onRefresh = React.useCallback(() => {
+    setRefreshing(true);
+    setTimeout(() => {
+      setRefreshing(false);
+    }, 2000);
+  }, []);
+
   return (
-    <Provider store={store}>
-      <SafeAreaView style={{flex: 1}}>
-        <StatusBar barStyle="dark-content" backgroundColor="white" />
-        <ScrollView>
-          <View style={styles.outerContainer}>
-            <View style={styles.container}>
-              {/* <Section title="Hi">
-                <Text>Hello User!</Text>
-              </Section> */}
-              <SignUp/>
-            </View>
-          </View>
-        </ScrollView>
-      </SafeAreaView>
-    </Provider>
+    <NavigationContainer>
+      <Stack.Navigator initialRouteName="SignIn">
+        {!isLoggedIn ? (
+          <>
+            <Stack.Screen name="SignIn" component={SignIn} />
+            <Stack.Screen name="SignUp" component={SignUp} />
+          </>
+        ) : (
+          <Stack.Screen name="Home" component={Home} />
+        )}
+      </Stack.Navigator>
+    </NavigationContainer>
   );
 };
 
