@@ -1,11 +1,9 @@
 import React, { useEffect, useState } from 'react';
 import { Button, StyleSheet, Text, TextInput, View } from 'react-native';
 import { User, addUser, userSelector } from '../redux/reducers/userSlice';
-import { login } from '../redux/reducers/authSlice';
-import { useAppDispatch, useAppSelector } from '../redux/hooks';
+import { useAppDispatch } from '../redux/hooks';
 import { store } from '../redux/store/store';
 import { useSelector } from 'react-redux';
-import { SignIn } from './SignIn';
 
 const styles = StyleSheet.create({
   sectionContainer: {
@@ -13,7 +11,7 @@ const styles = StyleSheet.create({
   },
 });
 
-const SignUp = ({navigation}) => {
+const SignUp = ({ navigation }) => {
   const [username, setUsername] = useState<string>('');
   const [email, setEmail] = useState<string>('');
   const [password, setPassword] = useState<string>('');
@@ -32,7 +30,7 @@ const SignUp = ({navigation}) => {
       console.log('Old UserReducer: ', userSliceState);
       dispatch(addUser(newUser));
       console.log('New State:', store.getState());
-      console.log(newUser.email +' has registered successfully');
+      console.log(newUser.email + ' has registered successfully');
 
       navigation.navigate('SignIn');
 

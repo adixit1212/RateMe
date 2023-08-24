@@ -5,10 +5,10 @@ import { login } from '../redux/reducers/authSlice';
 import { useAppDispatch, useAppSelector } from '../redux/hooks';
 import { store } from '../redux/store/store';
 import { useSelector } from 'react-redux';
-import {NavigationContainer} from '@react-navigation/native';
-import {createNativeStackNavigator} from '@react-navigation/native-stack';
+import { NavigationContainer } from '@react-navigation/native';
+import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import SignUp from './SignUp';
-import LoggedIn from './LoggedIn';
+import Home from './Home';
 
 const Stack = createNativeStackNavigator();
 
@@ -18,14 +18,12 @@ const styles = StyleSheet.create({
   },
 });
 
-  const SignIn = ({navigation, route}) => {
+const SignIn = ({ navigation }) => {
   const [email, setEmail] = useState<string>('');
   const [password, setPassword] = useState<string>('');
 
   const dispatch = useAppDispatch();
   const loginUserSliceState = useSelector(loginUserSelector);
-
-  const {signUpEmail} = route.params;
 
   const handleSignIn = () => {
     try {
@@ -42,7 +40,7 @@ const styles = StyleSheet.create({
 
       console.log('New State:', store.getState());
 
-      //navigation.navigate('LoggedIn');
+      //navigation.navigate('Home');
 
     } catch (error) {
       console.error('Error signing up:', error);
@@ -55,7 +53,7 @@ const styles = StyleSheet.create({
 
   return (
 
-   <View style={styles.sectionContainer}>
+    <View style={styles.sectionContainer}>
       <Text>Sign In</Text>
 
       <Text>Email</Text>
