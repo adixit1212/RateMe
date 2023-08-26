@@ -2,7 +2,8 @@ import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 import { RootState } from '../store/store';
 
 export interface User {
-  name: string;
+  firstName: string;
+  lastName: string;
   email: string;
   password: string;
 }

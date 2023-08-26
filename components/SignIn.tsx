@@ -9,6 +9,10 @@ import {NavigationContainer} from '@react-navigation/native';
 import {createNativeStackNavigator} from '@react-navigation/native-stack';
 import SignUp from './SignUp';
 import LoggedIn from './LoggedIn';
+import { Amplify } from 'aws-amplify';
+import awsExports from '../src/aws-exports';
+import { Auth } from 'aws-amplify';
+Amplify.configure(awsExports);
 
 const Stack = createNativeStackNavigator();
 
@@ -25,14 +29,16 @@ const styles = StyleSheet.create({
   const dispatch = useAppDispatch();
   const loginUserSliceState = useSelector(loginUserSelector);
 
-  const {signUpEmail} = route.params;
-
   const handleSignIn = () => {
     try {
       const loginUser: User = {
         email: email,
         password: password,
       };
+
+      Auth.signIn({ username: email , password: password });
+
+
       console.log('User successfully signed in:', loginUser);
       console.log('Old State:', store.getState());
       console.log('Old Login Reducer: ', loginUserSliceState);
@@ -45,7 +51,7 @@ const styles = StyleSheet.create({
       //navigation.navigate('LoggedIn');
 
     } catch (error) {
-      console.error('Error signing up:', error);
+      console.error('Error signing in:', error);
     }
   };
 
