@@ -1,10 +1,5 @@
 import React, { useEffect, useState } from 'react';
 import { Button, StyleSheet, Text, TextInput, View } from 'react-native';
-import { User, addUser, userSelector } from '../redux/reducers/userSlice';
-import { login } from '../redux/reducers/authSlice';
-import { useAppDispatch, useAppSelector } from '../redux/hooks';
-import { store } from '../redux/store/store';
-import { useSelector } from 'react-redux';
 import { SignIn } from './SignIn';
 import { Amplify } from 'aws-amplify';
 import awsExports from '../src/aws-exports';
@@ -22,49 +17,46 @@ const SignUp = ({navigation}) => {
   const [password, setPassword] = useState<string>('');
   const [firstName, setFirstName] = useState<string>('');
   const [lastName, setLastName] = useState<string>('');
-  const [username, setUsername] = useState<string>('');
 
-  const dispatch = useAppDispatch();
-  const userSliceState = useSelector(userSelector);
-
-  const handleSignUp = () => {
-
+  const handleSignUp = async() =>
+  {
     try {
-      const newUser: User = {
-        firstName: firstName,
-        lastName: lastName,
-        email: email,
-        password: password,
-      };
 
-      const {signUpUser} = Auth.signUp({
-          username: email,
-          password: password,
-          attributes: {
-              email: email,
-              given_name: firstName,
-              family_name: lastName
-          },
-      });
-
-
-      console.log('User successfully signed up:', email);
-      console.log('Old State:', store.getState());
-      console.log('Old UserReducer: ', userSliceState);
-      dispatch(addUser(newUser));
-      console.log('New State:', store.getState());
-      console.log(newUser.email +' has registered successfully');
-
-      navigation.navigate('SignIn');
-
-    } catch (error) {
-      console.error('Error signing up:', error);
+    if(firstName.length == 0 || lastName.length == 0)
+    {
+      alert("First name / Last name cannot be empty");
     }
-  };
 
-  useEffect(() => {
-    console.log('New UserReducer: ', userSliceState);
-  }, [userSliceState]);
+    else
+    {
+        const signUpUser = await Auth.signUp({
+            username: email,
+            password: password,
+            attributes: {
+                email: email,
+                given_name: firstName,
+                family_name: lastName
+            },
+        });
+
+        console.log('Signed up User', signUpUser);
+        console.log('User successfully signed up:', email);
+
+        navigation.navigate('SignIn');
+    }
+
+      } catch (error) {
+        console.error('Error signing up:', error.message);
+        if(error.message == 'Username cannot be empty')
+        {
+           alert('Email cannot be empty');
+        }
+        else
+        {
+           alert(error.message);
+        }
+      }
+  }
 
   return (
     <View style={styles.sectionContainer}>
@@ -76,12 +68,13 @@ const SignUp = ({navigation}) => {
         value={firstName}
         onChangeText={(text) => setFirstName(text)}
       />
-            <Text> Last Name </Text>
-            <TextInput
-              placeholder="Last Name"
-              value={lastName}
-              onChangeText={(text) => setLastName(text)}
-            />
+
+       <Text> Last Name </Text>
+       <TextInput
+         placeholder="Last Name"
+         value={lastName}
+         onChangeText={(text) => setLastName(text)}
+       />
 
       <Text>Email</Text>
       <TextInput
@@ -89,6 +82,7 @@ const SignUp = ({navigation}) => {
         value={email}
         onChangeText={(text) => setEmail(text)}
       />
+
       <Text>Password</Text>
       <TextInput
         placeholder="Password"
@@ -96,6 +90,7 @@ const SignUp = ({navigation}) => {
         value={password}
         onChangeText={(text) => setPassword(text)}
       />
+
       <Button title="Sign Up" onPress={handleSignUp} />
     </View>
   );

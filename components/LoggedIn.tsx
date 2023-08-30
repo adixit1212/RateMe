@@ -1,8 +1,7 @@
 import React from 'react';
 import { Platform } from 'react-native';
 import { Provider, useSelector } from 'react-redux';
-import { store } from '../redux/store/store';
-import { useAppDispatch, useAppSelector } from '../redux/hooks';
+import { useAppDispatch } from '../redux/hooks';
 import { logout } from '../redux/reducers/authSlice';
 import { osSelector } from '../redux/reducers/platformSlice';
 import {
@@ -15,21 +14,30 @@ import {
   RefreshControl,
   Button
 } from 'react-native';
+import { Auth } from 'aws-amplify';
 
-const LoggedIn = ({navigation}) =>
+const LoggedIn = async({navigation}) =>
 {
 const check_os = useSelector(osSelector);
 const dispatch = useAppDispatch();
 
+
 const LogOut = () =>
 {
+try {
+Auth.signOut();
 dispatch(logout());
-//navigation.navigate('SignIn');
+Auth.currentSession().then(data => console.log(data.accessToken));
+} catch(error)
+{
+console.log('Error logging out', error);
+}
+
 }
 
 return(
 <View>
-      <Text>You are now logged in with {check_os} !!</Text>
+      <Text> You are now logged in with {check_os} !!</Text>
       <Button onPress={LogOut} title="Log Out" />
  </View> );
 };
