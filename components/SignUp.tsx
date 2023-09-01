@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { Button, StyleSheet, Text, TextInput, View } from 'react-native';
-import { SignIn } from './SignIn';
+import { VerifyAccount } from './VerifyAccount';
+import { HomePage } from './HomePage';
 import { Amplify } from 'aws-amplify';
 import awsExports from '../src/aws-exports';
 import { Auth } from 'aws-amplify';
@@ -41,8 +42,7 @@ const SignUp = ({navigation}) => {
 
         console.log('Signed up User', signUpUser);
         console.log('User successfully signed up:', email);
-
-        navigation.navigate('SignIn');
+        navigation.navigate('VerifyAccount', {email: email});
     }
 
       } catch (error) {
@@ -92,6 +92,9 @@ const SignUp = ({navigation}) => {
       />
 
       <Button title="Sign Up" onPress={handleSignUp} />
+      <Text> </Text>
+      <Button title="Go Back" onPress={() => navigation.navigate('HomePage')} />
+
     </View>
   );
 };
