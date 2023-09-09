@@ -4,6 +4,7 @@ import { login } from '../redux/reducers/authSlice';
 import { useAppDispatch } from '../redux/hooks';
 import LoggedIn from './LoggedIn';
 import HomePage from './HomePage';
+import SendForgotPasswordEmail from './SendForgotPasswordEmail';
 import { Amplify } from 'aws-amplify';
 import awsExports from '../src/aws-exports';
 import { Auth } from 'aws-amplify';
@@ -21,11 +22,14 @@ const styles = StyleSheet.create({
   const [password, setPassword] = useState<string>('');
 
   const handleSignIn = async() => {
+  if(password !== '')
+  {
     try {
       const loginUser = await Auth.signIn(email , password);
 
       const currentUser = await Auth.currentAuthenticatedUser();
-      console.log('Auth user', currentUser.attributes.email);
+      const {attributes} = currentUser;
+      navigation.navigate('LoggedIn', {userDetails: attributes} );
 
     } catch (error) {
                 console.log(error);
@@ -35,13 +39,20 @@ const styles = StyleSheet.create({
                 }
                 else if(error.message === 'User is not confirmed.')
                 {
-                navigation.navigate('VerifyAccount', {email: email});
+                try { const verifyUser = await Auth.resendSignUp(email);
+                     navigation.navigate('VerifyAccount', {email: email});
+                    }catch (error){ alert(error.message) }
+
                 }
                 else
                 {
                 alert(error.message);
                 }
               };
+   }
+   else {
+   alert('Please enter a password to continue');
+   }
   };
 
   return (
@@ -64,6 +75,8 @@ const styles = StyleSheet.create({
       />
 
       <Button title="Sign In" onPress={handleSignIn} />
+      <Text> </Text>
+      <Button title="Forgot Password" onPress={() => navigation.navigate('SendForgotPasswordEmail')} />
       <Text> </Text>
       <Button title="Go Back" onPress={() => navigation.navigate('HomePage')} />
 

@@ -60,7 +60,6 @@ const SignUp = ({navigation}) => {
 
   return (
     <View style={styles.sectionContainer}>
-      <Text>Sign Up</Text>
 
       <Text> First Name </Text>
       <TextInput

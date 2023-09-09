@@ -30,9 +30,10 @@ const VerifyAccount = ({navigation, route}) => {
 
   return (
     <View style={styles.sectionContainer}>
-      <Text>Verify your Account continue...</Text>
+      <Text>Verify your account to continue...</Text>
+      <Text> </Text>
 
-      <Text> Please enter the verification code sent to your email {email} </Text>
+      <Text>Please enter the verification code sent to your email: {email} </Text>
       <TextInput
         placeholder="Enter the code"
         value={code}
